@@ -25,6 +25,8 @@ services:
     build: ./nextjs
     container_name: nextjs
     restart: unless-stopped
+    env_file:
+      - ./nextjs/.env 
     volumes:
       - ./nextjs/src/pages:/nextjs/pages
       - ./nextjs/src/public:/nextjs/public
@@ -44,11 +46,13 @@ services:
     build: ./graphql-typeorm
     container_name: graphql-external
     restart: unless-stopped
+    env_file:
+      - ./graphql-typeorm/.env
+    environment:
+      - ALWAYS_AUTHENTICATE=0
     volumes:
       - ./graphql-typeorm/dist:/graphql-typeorm/dist
       - ./graphql-typeorm/src:/graphql-typeorm/src
-    environment:
-      - ALWAYS_AUTHENTICATE=0
     depends_on:
       - postgres
 
@@ -56,11 +60,13 @@ services:
     build: ./graphql-typeorm
     container_name: graphql-internal
     restart: unless-stopped
+    env_file:
+      - ./graphql-typeorm/.env
+    environment:
+      - ALWAYS_AUTHENTICATE=1
     volumes:
       - ./graphql-typeorm/dist:/graphql-typeorm/dist
       - ./graphql-typeorm/src:/graphql-typeorm/src
-    environment:
-      - ALWAYS_AUTHENTICATE=1
     depends_on:
       - postgres
 
@@ -68,6 +74,8 @@ services:
     build: ./auth-server-nodejs
     container_name: auth-server
     restart: unless-stopped
+    env_file:
+      - ./auth-server-nodejs/.env
     volumes:
       - ./auth-server-nodejs/dist:/auth-server-nodejs/dist
       - ./auth-server-nodejs/src:/auth-server-nodejs/src

@@ -1,29 +1,17 @@
 import React from "react";
 import { Bio } from "../components/BioBox";
 import { GetServerSideProps } from "next";
+import { redirectIfUnauthenticated } from "../util/util";
 
 export const getServerSideProps: GetServerSideProps = async ({ req }) => {
-  console.log(req.headers.cookie);
-  const requestOptions = {
-    method: "GET",
-    headers: { Cookie: "access-token=" },
-  };
-  const res = await fetch(
-    `http://auth-server:3000/userinfo`,
-    requestOptions
-  );
-  //const data = await res.json();
-
-  if (res.ok) {
+  const redirect = await redirectIfUnauthenticated(req);
+  if (redirect !== null) {
     return {
-      redirect: {
-        destination: "/login",
-        permanent: false,
-      },
+      redirect,
     };
   }
   return {
-    props: {}, // will be passed to the page component as props
+    props: { hello: "hello" }, // will be passed to the page component as props
   };
 };
 

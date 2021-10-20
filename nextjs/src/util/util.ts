@@ -30,7 +30,7 @@ export async function redirectIfUnauthenticated(
     };
 
     const res = await fetch(
-      `http://auth-server:3000/userinfo`,
+      `http://${process.env.AUTH_SERVER_HOSTNAME}:${process.env.AUTH_SERVER_PORT}/userinfo`,
       requestOptions
     );
 

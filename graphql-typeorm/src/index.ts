@@ -22,13 +22,16 @@ const context = async ({ req }: { req: any }) => {
   const accessTokenCookie = "access-token=" + req.cookies["access-token"];
   const refreshTokenCookie = "refresh-token=" + req.cookies["refresh-token"];
 
+  const AUTH_SERVER_HOSTNAME = process.env.AUTH_SERVER_HOSTNAME;
+  const AUTH_SERVER_PORT = process.env.AUTH_SERVER_PORT;
+
   // https://medium.com/@gevorggalstyan/how-to-promisify-node-js-http-https-requests-76a5a58ed90c
   const make_req = async () => {
     return new Promise((resolve, reject) => {
       const auth_req = http.request(
         {
-          hostname: "auth-server",
-          port: 3000,
+          hostname: AUTH_SERVER_HOSTNAME,
+          port: AUTH_SERVER_PORT,
           path: "/userinfo",
           method: "GET",
           headers: {
@@ -95,9 +98,20 @@ const startServer = async () => {
 
   server.applyMiddleware({ app });
 
-  app.listen({ port: 4000 }, () => {
+  if (process.env.SERVER_PORT === undefined) {
+    throw new Error("Please specify SERVER_PORT environment variable.");
+  }
+  
+  if (process.env.SERVER_HOST === undefined) {
+    throw new Error("Please specify SERVER_HOST environment variable.");
+  }
+  
+  const PORT = parseInt(process.env.SERVER_PORT);
+  const HOST = process.env.SERVER_HOST;
+  
+  app.listen(PORT, HOST, () => {
     console.log(
-      `🚀 Server ready at http://localhost:4000${server.graphqlPath}`
+      `🚀 Server ready at http://${HOST}:${PORT}${server.graphqlPath}`
     );
     console.log("ALWAYS AUTHENTICATE:" + process.env.ALWAYS_AUTHENTICATE);
   });

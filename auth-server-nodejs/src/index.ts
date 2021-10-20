@@ -28,16 +28,18 @@ const errorLink = onError(
   }
 );
 
+const GRAPHQL_HOSTNAME = process.env.GRAPHQL_INTERNAL_HOSTNAME
+const GRAPHQL_PORT = process.env.GRAPHQL_INTERNAL_PORT
+const GRAPHQL_QUERY_PATH = process.env.GRAPHQL_QUERY_PATH
+
 const httpLink = new HttpLink({
-  uri: "http://graphql-internal:4000/graphql",
+  uri: `http://${GRAPHQL_HOSTNAME}:${GRAPHQL_PORT}/${GRAPHQL_QUERY_PATH}`,
 });
 
 const client = new ApolloClient({
   link: from([errorLink, httpLink]),
   cache: new InMemoryCache(),
 });
-
-const port = 3000;
 
 /*
  * username: make
@@ -277,6 +279,17 @@ app.post("/add-user", async (req, res) => {
   console.log(addUserRet);
 });
 
-app.listen(port, () => {
-  console.log(`Example app listening at http://localhost:${port}`);
+if (process.env.SERVER_PORT === undefined) {
+  throw new Error("Please specify SERVER_PORT environment variable.");
+}
+
+if (process.env.SERVER_HOST === undefined) {
+  throw new Error("Please specify SERVER_HOST environment variable.");
+}
+
+const PORT = parseInt(process.env.SERVER_PORT);
+const HOST = process.env.SERVER_HOST;
+
+app.listen(PORT, HOST, () => {
+  console.log(`Auth server listening at http://${HOST}:${PORT}`);
 });
