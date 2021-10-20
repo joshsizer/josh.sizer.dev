@@ -1,8 +1,8 @@
 version: '3'  
 services:
-  mynginx:
+  nginx:
       build: ./nginx
-      container_name: mynginx
+      container_name: nginx
       restart: unless-stopped
       ports:
       - "80:80"
@@ -13,9 +13,63 @@ services:
       - ./certbot/etc/letsencrypt:/etc/letsencrypt
       - ./certbot/var/www/certbot:/var/www/certbot
       command: "/bin/sh -c 'while :; do sleep 6h & wait $${!}; nginx -s reload; done & nginx -g \"daemon off;\"'"
+  
   certbot:
       image: certbot/certbot
       volumes:
       - ./certbot/etc/letsencrypt:/etc/letsencrypt
       - ./certbot/var/www/certbot:/var/www/certbot
       entrypoint: "/bin/sh -c 'trap exit TERM; while :; do certbot renew; sleep 12h & wait $${!}; done;'"
+  
+  nextjs:
+    build: ./nextjs
+    container_name: nextjs
+    restart: unless-stopped
+    volumes:
+      - ./nextjs/src/pages:/nextjs/pages
+      - ./nextjs/src/public:/nextjs/public
+      - ./nextjs/src/components:/nextjs/components
+      - ./nextjs/src/hooks:/nextjs/hooks
+
+  postgres:
+    image: postgres:latest
+    container_name: postgres
+    restart: unless-stopped
+    env_file:
+      - ./postgres/database.env
+    volumes:
+      - ./postgres/data:/var/lib/postgresql/data
+
+  graphql-external:
+    build: ./graphql-typeorm
+    container_name: graphql-external
+    restart: unless-stopped
+    volumes:
+      - ./graphql-typeorm/dist:/graphql-typeorm/dist
+      - ./graphql-typeorm/src:/graphql-typeorm/src
+    environment:
+      - ALWAYS_AUTHENTICATE=0
+    depends_on:
+      - postgres
+
+  graphql-internal:
+    build: ./graphql-typeorm
+    container_name: graphql-internal
+    restart: unless-stopped
+    volumes:
+      - ./graphql-typeorm/dist:/graphql-typeorm/dist
+      - ./graphql-typeorm/src:/graphql-typeorm/src
+    environment:
+      - ALWAYS_AUTHENTICATE=1
+    depends_on:
+      - postgres
+
+  auth-server:
+    build: ./auth-server-nodejs
+    container_name: auth-server
+    restart: unless-stopped
+    volumes:
+      - ./auth-server-nodejs/dist:/auth-server-nodejs/dist
+      - ./auth-server-nodejs/src:/auth-server-nodejs/src
+    depends_on:
+      - graphql-internal
