@@ -32,7 +32,7 @@ export const LoginForm: React.FC<Props> = () => {
       body: JSON.stringify({ email: values.email, password: values.password }),
     };
 
-    fetch("https://josh.sizer.dev/auth/login", requestOptions)
+    fetch(`/auth/login`, requestOptions)
       .then((res) => res.json())
       .then(
         (res) => {

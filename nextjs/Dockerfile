@@ -1,19 +1,14 @@
 FROM node
 
-WORKDIR /nextjs
-
-# RUN npm install next react react-dom
-
-COPY ["./src/package.json", "./src/package-lock.json", "./"]
-
-# RUN npm install --production=false
-RUN npm install --production
-
-COPY ./src ./
-
-RUN npm run build
-
+ARG APP_ENV
 EXPOSE 3000
 
-CMD ["npm", "run", "start"]
-# CMD ["npm", "run", "dev"]
+WORKDIR /nextjs
+
+COPY ./ ./
+
+RUN chmod u+x install.sh && chmod u+x entrypoint.sh
+
+RUN ./install.sh
+
+CMD ./entrypoint.sh
