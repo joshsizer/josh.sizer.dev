@@ -1,14 +1,14 @@
 FROM node
 
+ARG APP_ENV
+EXPOSE 4000
+
 WORKDIR /graphql-typeorm
 
-COPY ["./package.json", "./package-lock.json", "./"]
+COPY ./ ./
 
-# RUN npm install --production=true
-RUN npm install --production=false
+RUN chmod u+x install.sh && chmod u+x entrypoint.sh
 
-COPY . .
+RUN ./install.sh
 
-# RUN npm run build
-
-CMD ["npm", "run", "start"]
+CMD ./entrypoint.sh
