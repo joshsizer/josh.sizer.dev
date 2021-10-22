@@ -28,9 +28,9 @@ const errorLink = onError(
   }
 );
 
-const GRAPHQL_HOSTNAME = process.env.GRAPHQL_INTERNAL_HOSTNAME
-const GRAPHQL_PORT = process.env.GRAPHQL_INTERNAL_PORT
-const GRAPHQL_QUERY_PATH = process.env.GRAPHQL_QUERY_PATH
+const GRAPHQL_HOSTNAME = process.env.GRAPHQL_INTERNAL_HOSTNAME;
+const GRAPHQL_PORT = process.env.GRAPHQL_INTERNAL_PORT;
+const GRAPHQL_QUERY_PATH = process.env.GRAPHQL_QUERY_PATH;
 
 const httpLink = new HttpLink({
   uri: `http://${GRAPHQL_HOSTNAME}:${GRAPHQL_PORT}/${GRAPHQL_QUERY_PATH}`,
