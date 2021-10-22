@@ -5,9 +5,9 @@
   "main": "dist/index.js",
   "scripts": {
     "watch": "tsc --watch",
-    "build": "tsc",
     "dev": "NODE_ENV=development nodemon dist/index.js",
-    "start": "npm run build && NODE_ENV=production node dist/index.js"
+    "build": "tsc",
+    "start": "NODE_ENV=production node dist/index.js"
   },
   "author": "",
   "license": "ISC",

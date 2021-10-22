@@ -6,6 +6,8 @@ services:
       dockerfile: Dockerfile
       args:
         APP_ENV: ${APP_ENV}
+        APP_ENV_DEVELOPMENT: ${APP_ENV_DEVELOPMENT}
+        APP_ENV_PRODUCTION: ${APP_ENV_PRODUCTION}
     container_name: nginx
     restart: unless-stopped
     ports:
@@ -26,11 +28,15 @@ services:
     entrypoint: "/bin/sh -c 'trap exit TERM; while :; do certbot renew; sleep 12h & wait $${!}; done;'"
 
   nextjs:
-    build: ./nextjs
+    build: 
+      context: ./nextjs
+      dockerfile: Dockerfile
+      args:
+        APP_ENV: ${APP_ENV}
+        APP_ENV_DEVELOPMENT: ${APP_ENV_DEVELOPMENT}
+        APP_ENV_PRODUCTION: ${APP_ENV_PRODUCTION}
     container_name: nextjs
     restart: unless-stopped
-    env_file:
-      - ./nextjs/.env
     volumes:
       - ./nextjs/src:/nextjs/src
 
@@ -44,11 +50,15 @@ services:
       - ./postgres/data:/var/lib/postgresql/data
 
   graphql-external:
-    build: ./graphql-typeorm
+    build: 
+      context: ./graphql-typeorm
+      dockerfile: Dockerfile
+      args:
+        APP_ENV: ${APP_ENV}
+        APP_ENV_DEVELOPMENT: ${APP_ENV_DEVELOPMENT}
+        APP_ENV_PRODUCTION: ${APP_ENV_PRODUCTION}
     container_name: graphql-external
     restart: unless-stopped
-    env_file:
-      - ./graphql-typeorm/.env
     environment:
       - ALWAYS_AUTHENTICATE=0
     volumes:
@@ -58,11 +68,15 @@ services:
       - postgres
 
   graphql-internal:
-    build: ./graphql-typeorm
+    build: 
+      context: ./graphql-typeorm
+      dockerfile: Dockerfile
+      args:
+        APP_ENV: ${APP_ENV}
+        APP_ENV_DEVELOPMENT: ${APP_ENV_DEVELOPMENT}
+        APP_ENV_PRODUCTION: ${APP_ENV_PRODUCTION}
     container_name: graphql-internal
     restart: unless-stopped
-    env_file:
-      - ./graphql-typeorm/.env
     environment:
       - ALWAYS_AUTHENTICATE=1
     volumes:
@@ -72,11 +86,15 @@ services:
       - postgres
 
   auth-server:
-    build: ./auth-server-nodejs
+    build: 
+      context: ./auth-server-nodejs
+      dockerfile: Dockerfile
+      args:
+        APP_ENV: ${APP_ENV}
+        APP_ENV_DEVELOPMENT: ${APP_ENV_DEVELOPMENT}
+        APP_ENV_PRODUCTION: ${APP_ENV_PRODUCTION}
     container_name: auth-server
     restart: unless-stopped
-    env_file:
-      - ./auth-server-nodejs/.env
     volumes:
       - ./auth-server-nodejs/dist:/auth-server-nodejs/dist
       - ./auth-server-nodejs/src:/auth-server-nodejs/src
