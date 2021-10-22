@@ -50,8 +50,7 @@ export const CreateAccForm: React.FC<Props> = () => {
       }),
     };
 
-    const DOMAIN_NAME = process.env.DOMAIN_NAME;
-    fetch(`https://${DOMAIN_NAME}/auth/add-user`, requestOptions)
+    fetch(`/auth/add-user`, requestOptions)
       .then((res) => res.json())
       .then(
         (res) => {
