@@ -1,22 +1,20 @@
 import Head from "next/head";
-import Image from "next/image";
+// import Image from "next/image";
 import styles from "../styles/Home.module.css";
-import { GetServerSideProps } from "next";
 import React from "react";
-import { redirectIfUnauthenticated } from "../util/util";
 
-//https://nextjs.org/docs/basic-features/data-fetching#provided-req-middleware-in-getserversideprops
-export const getServerSideProps: GetServerSideProps = async ({ req }) => {
-  const redirect = await redirectIfUnauthenticated(req);
-  if (redirect !== null) {
-    return {
-      redirect,
-    };
-  }
-  return {
-    props: { hello: "hello" }, // will be passed to the page component as props
-  };
-};
+// //https://nextjs.org/docs/basic-features/data-fetching#provided-req-middleware-in-getserversideprops
+// export const getServerSideProps: GetServerSideProps = async ({ req }) => {
+//   const redirect = await redirectIfUnauthenticated(req);
+//   if (redirect !== null) {
+//     return {
+//       redirect,
+//     };
+//   }
+//   return {
+//     props: { hello: "hello" }, // will be passed to the page component as props
+//   };
+// };
 
 class HomePage extends React.Component {
   render() {
@@ -32,41 +30,50 @@ class HomePage extends React.Component {
           <h1 className={styles.title}>josh.sizer.dev</h1>
 
           <p className={styles.description}>
-            Play around. Stay a little while.
+            Play around. Stay a while.
           </p>
 
           <div className={styles.grid}>
-            <a href="https://nextjs.org/docs" className={styles.card}>
-              <h2>Documentation &rarr;</h2>
-              <p>Find in-depth information about Next.js features and API.</p>
+            <a href="/brain-tumor-detection" className={styles.card} target="_blank"
+            rel="noopener noreferrer">
+              <h2>Brain Tumor Detection &rarr;</h2>
+              <p>Detect brain tumors using a convolutional neural network. 
+                Can classify as having no tumor, glioma, meningioma, or pituitary.</p>
             </a>
 
-            <a href="https://nextjs.org/learn" className={styles.card}>
-              <h2>Learn &rarr;</h2>
-              <p>Learn about Next.js in an interactive course with quizzes!</p>
-            </a>
-
-            <a
-              href="https://github.com/vercel/next.js/tree/master/examples"
-              className={styles.card}
-            >
-              <h2>Examples &rarr;</h2>
-              <p>Discover and deploy boilerplate example Next.js projects.</p>
+            <a href="https://github.com/joshsizer/MNIST-Digit-Classifier" className={styles.card} target="_blank"
+            rel="noopener noreferrer">
+              <h2>MNIST Digit Classifier &rarr;</h2>
+              <p>Keras, Pytorch, and Numpy only machine learning implementations for
+                 the classic challenge of classifying handwritten digits.</p>
             </a>
 
             <a
-              href="https://vercel.com/new?utm_source=create-next-app&utm_medium=default-template&utm_campaign=create-next-app"
-              className={styles.card}
+              href="https://github.com/joshsizer/My-Malloc"
+              className={styles.card} target="_blank"
+              rel="noopener noreferrer"
             >
-              <h2>Deploy &rarr;</h2>
+              <h2>My Malloc &rarr;</h2>
+              <p>Linked-list implementation of the standard C 
+                library function “malloc.” Uses a first-fit 
+                algorithm with support for coalescing.</p>
+            </a>
+
+            <a
+              href="https://github.com/joshsizer/Full-Stack-Template"
+              className={styles.card} target="_blank"
+              rel="noopener noreferrer"
+            >
+              <h2>Full Stack Template &rarr;</h2>
               <p>
-                Instantly deploy your Next.js site to a public URL with Vercel.
+              Containerized starter code for rapid application development. 
+              Includes prod/dev environments and basic JWT authentication.
               </p>
             </a>
           </div>
         </main>
 
-        <footer className={styles.footer}>
+        {/* <footer className={styles.footer}>
           <a
             href="https://vercel.com?utm_source=create-next-app&utm_medium=default-template&utm_campaign=create-next-app"
             target="_blank"
@@ -82,7 +89,7 @@ class HomePage extends React.Component {
               />
             </span>
           </a>
-        </footer>
+        </footer> */}
       </div>
     );
   }
