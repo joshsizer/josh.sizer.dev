@@ -8,12 +8,12 @@ export default function Login() {
       <LoginForm />
       <div>
         <Link href="/createAccount">
-          <a>Create Account</a>
+          Create Account
         </Link>
       </div>
       <div>
         <Link href="/forgotPassword">
-          <a>Forgot Password?</a>
+          Forgot Password?
         </Link>
       </div>
     </>
