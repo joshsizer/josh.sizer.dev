@@ -2,5 +2,5 @@ apiVersion: v2
 name: josh-sizer-dev
 description: A Helm chart for Joshua Sizer's personal website.
 type: application
-version: 0.1.0
-appVersion: "0.1.0"
+version: 0.1.1
+appVersion: "1.23.4"
